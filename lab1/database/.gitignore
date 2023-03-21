@@ -1,1 +1,2 @@
 *.sqlite*
+..\resources\views\vendor\pagination

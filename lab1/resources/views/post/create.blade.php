@@ -1,33 +1,40 @@
 @extends('layouts.app')
 
-
-@section('title') Create @endsection
+@section('title')
+    Create
+@endsection
 
 @section('content')
+    <!-- @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif -->
 
-<container class="card " style="margin-top: 50px;padding: 10px;">
-    <form method="post" action="{{route('posts.store')}}" style="padding: 10px;">
+    <form method="POST" action="{{route('posts.store')}}" style="margin-top: 40px;">
         @csrf
-        Full Name
-        <input type="text" style="margin-top: 20px;margin-left: 20px;" id="posted_by"><br>
-        Title
-        <input type="text" style="margin-top: 20px;margin-left: 20px;" id="title"><br>
-        <div style="display:flex;align-items: center;">
-            Description
-            <textarea type="text" style="margin-top: 20px;margin-left: 20px;" id="description"></textarea><br>
-        </div> <!-- <a href="{{route('posts.store')}}" class="mt-4 btn btn-success">Save Post</a> -->
-        <button class="mt-4 btn btn-success">Save Post</button>
+        <div class="mb-3">
+            <label for="exampleFormControlInput1" class="form-label">Title</label>
+            <input name="title" type="text" class="form-control" id="exampleFormControlInput1">
+        </div>
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+            <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
 
+        <div class="mb-3">
+            <label for="exampleFormControlTextarea1" class="form-label">Post Creator</label>
+            <select name="post_creator" class="form-control">
+                @foreach($users as $user)
+                    <option value="{{$user->id}}">{{$user->name}}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <button class="btn btn-success">Submit</button>
     </form>
-</container>
-
-<style>
-input,textarea{
-    border: 1px solid lightgray;
-    border-radius: 5px;
-    padding:5px;
-
-}
-</style>
-
 @endsection
