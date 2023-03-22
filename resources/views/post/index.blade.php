@@ -29,12 +29,12 @@
                 <a href="{{route('posts.show', $post->id)}}" class="btn btn-info" style="color:white;">View</a>
                 <a href="{{route('posts.edit', $post->id)}}" class="btn btn-primary">Edit</a>
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" value="{{$post['id']}}">
+                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal{{$post['id']}}" >
                     Delete
                 </button>
             </td>
         </tr>
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal{{$post['id']}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -48,9 +48,9 @@
                         <form action="{{route('posts.destroy', $post->id)}}" method="POST">
                             @csrf
                             @method('DELETE')
-                            <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
