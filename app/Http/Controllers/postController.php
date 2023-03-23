@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Http\Requests\StorePostRequest;
+use Illuminate\Auth\Events\Validated;
 
 class PostController extends Controller
 {
@@ -13,18 +15,12 @@ class PostController extends Controller
         $allPosts = Post::paginate(7); //select * from posts
 
         return view('post.index', ['posts' => $allPosts]);
-        
     }
 
     public function show($id)
     {
-        //        $post = Post::find($id); //select * from posts where id = 1 limit 1;
 
-        $postCollection = Post::where('id', $id)->get(); //Collection object .... select * from posts where id = 1;
-
-        $post = Post::where('id', $id)->first(); //Post model object ... select * from posts where id = 1 limit 1;
-
-        //        Post::where('title', 'Laravel')->first();
+        $post = Post::where('id', $id)->first(); 
 
         return view('post.show', ['post' => $post]);
     }
@@ -36,25 +32,21 @@ class PostController extends Controller
         return view('post.create', ['users' => $users]);
     }
 
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        //get the form data
-        //        $data = request()->all();
-        //
+        $valid_request = $request->validated();
+
         $title = request()->title;
         $description = request()->description;
         $postCreator = request()->post_creator;
 
-        //        $data = $request->all();
-
-        //insert the form data in the database
+       
         Post::create([
             'title' => $title,
             'description' => $description,
             'user_id' => $postCreator,
         ]);
 
-        //redirect to index route
         return to_route('posts.index');
     }
 
@@ -62,13 +54,14 @@ class PostController extends Controller
     {
         $users = User::all();
         $post = Post::find($id);
-        // dd($post);
 
         return view('post.edit', ['users' => $users, 'post' => $post]);
     }
 
-    public function update($id)
+    public function update($id, StorePostRequest $request)
     {
+        $valid_request = $request->validated();
+        
         $post = Post::find($id);
 
         $new_title = request()->title;
@@ -97,4 +90,3 @@ class PostController extends Controller
         return to_route('posts.index');
     }
 }
-
