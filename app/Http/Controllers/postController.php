@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StorePostRequest;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Str;
+use App\Jobs\PruneOldPostsJob;
 
 class PostController extends Controller
 {
@@ -90,5 +91,12 @@ class PostController extends Controller
 
         $post->delete();
         return to_route('posts.index');
+    }
+
+    public function removeOldPosts()
+    {
+        PruneOldPostsJob::dispatch();
+        return to_route('posts.index');
+
     }
 }
