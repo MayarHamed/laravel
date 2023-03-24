@@ -12,6 +12,7 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Title</th>
+            <th scope="col">Slug</th>
             <th scope="col">Posted By</th>
             <th scope="col">Created At</th>
             <th scope="col">Actions</th>
@@ -23,6 +24,7 @@
         <tr>
             <td>{{$post->id}}</td>
             <td>{{$post->title}}</td>
+            <td>{{$post->slug}}</td>
             <td>{{$post->user->name}}</td>
             <td>{{date('Y-m-d', strtotime($post->created_at))}}</td>
             <td>

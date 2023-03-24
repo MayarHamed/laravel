@@ -7,6 +7,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePostRequest;
 use Illuminate\Auth\Events\Validated;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -40,6 +41,7 @@ class PostController extends Controller
         $description = request()->description;
         $postCreator = request()->post_creator;
 
+        $slug=Str::slug($title);
        
         Post::create([
             'title' => $title,
