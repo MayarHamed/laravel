@@ -44,7 +44,11 @@ class PostController extends Controller
         $description = request()->description;
         $postCreator = request()->post_creator;
         if (request()->avatar) {
-            $path = request()->avatar->store('avatars', 'public');
+            $path = Storage::putFileAs(
+                'public/avatars',
+                $request->file('avatar'),
+                $request->file('avatar')->getClientOriginalName()
+            );
         }
 
         $slug = Str::slug($title);
@@ -87,11 +91,15 @@ class PostController extends Controller
             $post->user_id = $new_postCreator;
         }
         if (request()->avatar) {
-            if ($post->image_path) {
+            if ($post->image_path && Storage::exists($post->image_path)) {
                 Storage::delete($post->image_path);
                 // dd("deleted");
             }
-            $path = request()->avatar->store('avatars', 'public');
+            $path = Storage::putFileAs(
+                'public/avatars',
+                $request->file('avatar'),
+                $request->file('avatar')->getClientOriginalName()
+            );
             $post->image_path = $path;
         }
 
@@ -102,7 +110,7 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::find($id);
-        if ($post->image_path) {
+        if ($post->image_path && Storage::exists($post->image_path)) {
             Storage::delete($post->image_path);
             // dd("deleted");
 

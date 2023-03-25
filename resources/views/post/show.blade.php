@@ -11,7 +11,7 @@
         <div class="card-body">
             <h5 class="card-title">Title: {{$post->title}}</h5>
             <p class="card-text">Description: {{$post->description}}</p>
-            <img src="{{Storage::url($post->image_path)}}" alt="{{$post->image_path}}" width="250px">
+            <img src="{{Storage::url($post->image_path)}}" alt="{{Storage::path($post->image_path)}}" width="250px">
         </div>
     </div><br>
 
