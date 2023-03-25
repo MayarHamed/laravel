@@ -6,7 +6,8 @@ Update
 
 @section('content')
 @if ($errors->any())
-<br><div class="alert alert-danger">
+<br>
+<div class="alert alert-danger">
     <ul>
         @foreach ($errors->all() as $error)
         <li>{{ $error }}</li>
@@ -15,7 +16,7 @@ Update
 </div>
 @endif
 
-<form method="post" action="{{route('posts.update', $post->id)}}" style="margin-top: 40px;">
+<form method="post" action="{{route('posts.update', $post->id)}}" style="margin-top: 40px;" enctype="multipart/form-data">
     @csrf
     @method('PUT')
     <div class="mb-3">
@@ -26,7 +27,10 @@ Update
         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
         <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3">{{$post->description}}</textarea>
     </div>
-
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Upload picture:</label>
+        <input class="form-control" type="file" id="formFile" accept=".jpg,.png" name="avatar" />
+    </div>
     <div class="mb-3">
         <label for="exampleFormControlTextarea1" class="form-label">Post Creator</label>
         <select name="post_creator" class="form-control">

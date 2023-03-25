@@ -11,6 +11,7 @@
         <div class="card-body">
             <h5 class="card-title">Title: {{$post->title}}</h5>
             <p class="card-text">Description: {{$post->description}}</p>
+            <img src="{{Storage::url($post->image_path)}}" alt="{{$post->image_path}}" width="250px">
         </div>
     </div><br>
 
@@ -44,11 +45,11 @@
                         </button>
                     </td>
                 </tr>
-                <div class="modal fade" id="deleteModal{{$comment['id']}}" >
+                <div class="modal fade" id="deleteModal{{$comment['id']}}">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" >Confirm delete</h5>
+                                <h5 class="modal-title">Confirm delete</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -60,7 +61,7 @@
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
-                                <button class="btn btn-secondary" data-bs-dismiss="modal"aria-label="Close">Close</button>
+                                <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
 
                             </div>
                         </div>
@@ -80,9 +81,9 @@
                                     <div>
                                         <input style="padding: 10px; border:1px solid lightgray;" name="new_content" value="{{$comment->content}}">
                                     </div><br>
-                                        <button type="submit" class="btn btn-success">Save</button>
+                                    <button type="submit" class="btn btn-success">Save</button>
                                 </form>
-                                <button class="btn btn-secondary" data-bs-dismiss="modal"aria-label="Close">Close</button>
+                                <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
                             </div>
                         </div>
                     </div>

@@ -13,9 +13,10 @@ class CommentController extends Controller
     {
         $post = Post::find($id);
         $comment = new Comment();
-
-        $comment->content = request()->content;
-        $post->Comments()->save($comment);
+        if (request()->content) {
+            $comment->content = request()->content;
+            $post->Comments()->save($comment);
+        }
 
         return view('post.show', ['post' => $post]);
     }
@@ -24,10 +25,10 @@ class CommentController extends Controller
     {
         $comment = Comment::find($id);
         $commentable = $comment->commentable;
-        
+
         $comment->delete();
 
-         return view('post.show', ['post' => $commentable]);
+        return view('post.show', ['post' => $commentable]);
     }
     public function update($id)
     {

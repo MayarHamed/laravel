@@ -9,6 +9,8 @@ use App\Http\Requests\StorePostRequest;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Support\Str;
 use App\Jobs\PruneOldPostsJob;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
@@ -22,7 +24,7 @@ class PostController extends Controller
     public function show($id)
     {
 
-        $post = Post::where('id', $id)->first(); 
+        $post = Post::where('id', $id)->first();
 
         return view('post.show', ['post' => $post]);
     }
@@ -37,17 +39,21 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $valid_request = $request->validated();
-
+        $path = null;
         $title = request()->title;
         $description = request()->description;
         $postCreator = request()->post_creator;
+        if (request()->avatar) {
+            $path = request()->avatar->store('avatars', 'public');
+        }
 
-        $slug=Str::slug($title);
-       
+        $slug = Str::slug($title);
+
         Post::create([
             'title' => $title,
             'description' => $description,
             'user_id' => $postCreator,
+            'image_path' => $path
         ]);
 
         return to_route('posts.index');
@@ -64,7 +70,7 @@ class PostController extends Controller
     public function update($id, StorePostRequest $request)
     {
         $valid_request = $request->validated();
-        
+
         $post = Post::find($id);
 
         $new_title = request()->title;
@@ -80,6 +86,14 @@ class PostController extends Controller
         if ($post->user_id != $new_postCreator) {
             $post->user_id = $new_postCreator;
         }
+        if (request()->avatar) {
+            if ($post->image_path) {
+                Storage::delete($post->image_path);
+                // dd("deleted");
+            }
+            $path = request()->avatar->store('avatars', 'public');
+            $post->image_path = $path;
+        }
 
         $post->save();
         return to_route('posts.index');
@@ -88,7 +102,11 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::find($id);
+        if ($post->image_path) {
+            Storage::delete($post->image_path);
+            // dd("deleted");
 
+        }
         $post->delete();
         return to_route('posts.index');
     }
@@ -97,6 +115,5 @@ class PostController extends Controller
     {
         PruneOldPostsJob::dispatch();
         return to_route('posts.index');
-
     }
 }

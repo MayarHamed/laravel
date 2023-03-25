@@ -6,7 +6,8 @@ Create
 
 @section('content')
 @if ($errors->any())
-<br><div class="alert alert-danger">
+<br>
+<div class="alert alert-danger">
     <ul>
         @foreach ($errors->all() as $error)
         <li>{{ $error }}</li>
@@ -15,7 +16,7 @@ Create
 </div>
 @endif
 
-<form method="POST" action="{{route('posts.store')}}" style="margin-top: 40px;">
+<form method="POST" action="{{route('posts.store')}}" style="margin-top: 40px;" enctype="multipart/form-data">
     @csrf
     <div class="mb-3">
         <label for="exampleFormControlInput1" class="form-label">Title</label>
@@ -24,6 +25,11 @@ Create
     <div class="mb-3">
         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
         <textarea name="description" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="formFile" class="form-label">Upload picture:</label>
+        <input class="form-control" type="file" id="formFile" accept=".jpg,.png" name="avatar"  />
     </div>
 
     <div class="mb-3">
